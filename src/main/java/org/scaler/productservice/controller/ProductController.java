@@ -1,15 +1,12 @@
 package org.scaler.productservice.controller;
 
-import org.scaler.productservice.dtos.ExceptionDto;
+
 import org.scaler.productservice.exception.ProductNotFoundException;
 import org.scaler.productservice.models.Product;
 import org.scaler.productservice.productservice.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -24,6 +21,10 @@ public class ProductController {
     @GetMapping("{id}")
     public Product getProductById(@PathVariable Long id) throws ProductNotFoundException {
         return productService.getProductById(id);
+    }
+    @DeleteMapping("{id}")
+    public Product deleteProductById(@PathVariable Long id){
+        return productService.deleteProductById(id);
     }
     @GetMapping
     public List<Product> getAllProducts(){
