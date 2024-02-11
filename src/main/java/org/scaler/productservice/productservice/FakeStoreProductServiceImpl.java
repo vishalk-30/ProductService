@@ -33,16 +33,20 @@ public class FakeStoreProductServiceImpl implements ProductService{
 
     @Override
     public Product deleteProductById(Long id) {
-        return getProductFromFakeStoreDto(fakeStoreClient.deleteProductById(id));
+        return getProductFromFakeStoreDto(fakeStoreClient
+                .deleteProductById(id));
     }
 
     @Override
     public Product addProduct(Product product) {
-        return getProductFromFakeStoreDto(fakeStoreClient.addProduct(getFakeStoreDtoFromProduct(product)));
+        return getProductFromFakeStoreDto(fakeStoreClient
+                .addProduct(getFakeStoreDtoFromProduct(product)));
     }
 
     @Override
-    public void updateProductById() {
+    public Product updateProductById(Product product, Long id) {
+        return getProductFromFakeStoreDto(fakeStoreClient
+                .updateProductById(getFakeStoreDtoFromProduct(product),id));
 
     }
 

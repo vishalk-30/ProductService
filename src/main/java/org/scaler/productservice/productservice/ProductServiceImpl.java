@@ -29,7 +29,8 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public void updateProductById() {
+    public Product updateProductById(Product product, Long id) {
+        return null;
 
     }
 }

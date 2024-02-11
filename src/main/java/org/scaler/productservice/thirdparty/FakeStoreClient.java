@@ -68,7 +68,11 @@ public class FakeStoreClient {
     }
 
 
-    public void updateProductById() {
+    public FakeStoreDto updateProductById(FakeStoreDto fakeStoreDto,Long id) {
+        RestTemplate restTemplate = restTemplateBuilder.build();
+        RequestCallback requestCallback = restTemplate.httpEntityCallback(fakeStoreDto, FakeStoreDto.class);
+        ResponseExtractor<ResponseEntity<FakeStoreDto>> responseExtractor = restTemplate.responseEntityExtractor(FakeStoreDto.class);
+        return restTemplate.execute(specificProductUrl, HttpMethod.PUT, requestCallback, responseExtractor, id).getBody();
 
     }
 
