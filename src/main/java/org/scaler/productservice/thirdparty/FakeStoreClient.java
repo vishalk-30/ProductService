@@ -3,6 +3,7 @@ package org.scaler.productservice.thirdparty;
 import org.scaler.productservice.dtos.FakeStoreDto;
 import org.scaler.productservice.exception.ProductNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -14,12 +15,17 @@ import java.util.List;
 @Component
 public class FakeStoreClient {
     private RestTemplateBuilder restTemplateBuilder;
-    private String specificProductUrl = "https://fakestoreapi.com/products/{id}";
-    private String getAllProductUrl = "https://fakestoreapi.com/products";
-    private String addProductUrl = "https://fakestoreapi.com/products";
+    private String specificProductUrl;
+    private String genericProductUrl;
+
     @Autowired
-    public FakeStoreClient(RestTemplateBuilder restTemplateBuilder){
+    public FakeStoreClient(RestTemplateBuilder restTemplateBuilder,
+                           @Value("${fakeStore.api.specific.url}") String specificFakeStoreUrl,
+                           @Value("${fakeStore.api.generic.url}") String genericFakeStoreUrl ){
+
         this.restTemplateBuilder = restTemplateBuilder;
+        this.specificProductUrl = specificFakeStoreUrl;
+        this.genericProductUrl = genericFakeStoreUrl;
     }
 
     public FakeStoreDto getProductById(Long id) throws ProductNotFoundException {
@@ -34,7 +40,7 @@ public class FakeStoreClient {
 
     public List<FakeStoreDto> getAllProducts() {
         RestTemplate restTemplate = restTemplateBuilder.build();
-        ResponseEntity<FakeStoreDto[]> responseEntity =  restTemplate.getForEntity(getAllProductUrl, FakeStoreDto[].class);
+        ResponseEntity<FakeStoreDto[]> responseEntity =  restTemplate.getForEntity(genericProductUrl, FakeStoreDto[].class);
 
         return List.of(responseEntity.getBody());
     }
@@ -54,10 +60,11 @@ public class FakeStoreClient {
 
     public FakeStoreDto addProduct(FakeStoreDto fakeStoreDto) {
         RestTemplate restTemplate = restTemplateBuilder.build();
-        ResponseEntity<FakeStoreDto> responseEntity =  restTemplate.postForEntity(addProductUrl,
+        ResponseEntity<FakeStoreDto> responseEntity =  restTemplate.postForEntity(genericProductUrl,
                 fakeStoreDto, FakeStoreDto.class);
 
         return responseEntity.getBody();
+
     }
 
 
